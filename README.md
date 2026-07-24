@@ -1,4 +1,3 @@
-# TUGAS-UAS-BASIS-DATA
 # Sistem Basis Data Skripsi/Tugas Akhir Mahasiswa
 
 Proyek Evaluasi Akhir Semester (EAS) mata kuliah **Pemrograman Basis Data** — Program Studi S1 Informatika, Semester 4.
@@ -7,10 +6,10 @@ Topik: Integrasi Stored Procedure, Function, Trigger, Cursor, Transaction Contro
 
 ## Kelompok 11
 
-- Uminati (IK2411011)
-- Lilis   (IK2411012)
-- Nuraisya Masdin (IK2411015)
-- Lisa Kelly (IK2411010)
+- Uminati
+- Lilis
+- Nuraisya
+- Lisa
 
 ## Deskripsi
 
@@ -54,10 +53,18 @@ mahasiswa (1) ──< (N) skripsi (N) >── (1) dosen
 
 ```
 .
-├── sistem_basis_data_skripsi.sql   # skrip utama: skema, procedure, function, trigger, data uji
-├── call_procedures_demo.sql        # kumpulan CALL untuk demo (alur normal + skenario error)
+├── sql/
+│   ├── 01_create_database.sql        # buat database
+│   ├── 02_create_tables.sql          # 6 tabel + relasi (PK/FK)
+│   ├── 03_create_index.sql           # 3 index
+│   ├── 04_create_function.sql        # 3 function
+│   ├── 05_create_trigger.sql         # 4 trigger
+│   ├── 06_create_procedure.sql       # 5 procedure (transaction control + exception handling)
+│   ├── 07_data_dummy.sql             # data uji (36+ baris)
+│   └── 08_contoh_query_pengujian.sql # query contoh untuk BAB IV
+├── call_procedures_demo.sql          # kumpulan CALL untuk demo (alur normal + skenario error)
 ├── docs/
-│   └── erd.png                     # diagram ERD
+│   └── erd.png                       # diagram ERD
 └── README.md
 ```
 
@@ -65,11 +72,26 @@ mahasiswa (1) ──< (N) skripsi (N) >── (1) dosen
 
 **Kebutuhan:** MySQL 8.x atau MariaDB 10.x
 
+Jalankan kedelapan file di folder `sql/` secara berurutan (nomor 01–08), karena setiap file bergantung pada objek yang dibuat file sebelumnya:
+
 ```bash
-mysql -u root -p < sistem_basis_data_skripsi.sql
+cd sql
+for f in 01_create_database.sql 02_create_tables.sql 03_create_index.sql \
+         04_create_function.sql 05_create_trigger.sql 06_create_procedure.sql \
+         07_data_dummy.sql 08_contoh_query_pengujian.sql; do
+  mysql -u root -p < "$f"
+done
 ```
 
-Skrip ini akan otomatis membuat database `db_skripsi_mahasiswa`, seluruh tabel, procedure, function, trigger, index, serta mengisi data uji.
+Atau gabungkan langsung lewat `cat`:
+
+```bash
+cat sql/01_create_database.sql sql/02_create_tables.sql sql/03_create_index.sql \
+    sql/04_create_function.sql sql/05_create_trigger.sql sql/06_create_procedure.sql \
+    sql/07_data_dummy.sql sql/08_contoh_query_pengujian.sql | mysql -u root -p
+```
+
+Setelah selesai, database `db_skripsi_mahasiswa` akan berisi seluruh tabel, procedure, function, trigger, index, dan data uji.
 
 ## Cara Demo
 
